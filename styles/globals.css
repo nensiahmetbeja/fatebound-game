@@ -1,0 +1,62 @@
+/* Global styles for FATEBOUND Landing Page */
+
+/* Design System Variables */
+:root {
+  /* Spacing Scale (8px base unit) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-10: 80px;
+  --space-12: 96px;
+
+  /* Colors */
+  --color-gold: #d4af37;
+  --color-gold-light: #f4d03f;
+  --color-brown-dark: #512922;
+  --color-brown-medium: #6b3a2a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #d1d5db;
+  --color-text-muted: #9ca3af;
+
+  /* Typography */
+  --font-display: 'Cinzel', serif;
+  --font-body: 'Montserrat', sans-serif;
+}
+
+/* Reset margins and padding for full width */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Ensure all containers take full width */
+* {
+  box-sizing: border-box;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f4d03f;
+}
+
+/* Global font imports */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
