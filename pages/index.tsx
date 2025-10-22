@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
 
@@ -13,9 +14,9 @@ export default function Home() {
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('')
 
-  const targetDate = new Date('2025-11-24T00:00:00Z')
-
   useEffect(() => {
+    const targetDate = new Date('2025-11-24T00:00:00Z')
+
     const updateCountdown = () => {
       const now = new Date().getTime()
       const distance = targetDate.getTime() - now
@@ -172,7 +173,7 @@ export default function Home() {
         <div className={styles.stickyBanner}>
           <div className={styles.bannerContent}>
             {/* <span className={styles.globeEmoji}>🌍</span> */}
-            <span className={styles.bannerText}>Don't miss the first official teaser launch</span>
+            <span className={styles.bannerText}>Don&apos;t miss the first official teaser launch</span>
             <a href="#email-section" className={styles.registerButton}>
               Register now
             </a>
@@ -191,19 +192,25 @@ export default function Home() {
               <div className={styles.logoWrapper}>
                 {/* Tika Studios Logo */}
                 <div className={styles.tikaLogo}>
-                  <img 
-                    src="https://tikastudios.al/wp-content/uploads/2025/04/Tika-Studios.png" 
-                    alt="Tika Studios" 
+                  <Image
+                    src="https://tikastudios.al/wp-content/uploads/2025/04/Tika-Studios.png"
+                    alt="Tika Studios"
+                    width={200}
+                    height={24}
                     className={styles.tikaLogoImage}
+                    priority
                   />
                 </div>
-                
+
                 {/* FATEBOUND Title */}
                 <div className={styles.fateboundTitle}>
-                  <img
+                  <Image
                     src="/fatebound-title.png"
                     alt="FATEBOUND"
+                    width={2340}
+                    height={274}
                     className={styles.fateboundSvg}
+                    priority
                   />
                 </div>
               </div>
@@ -215,7 +222,7 @@ export default function Home() {
               
               {/* Tagline */}
               <p className={styles.tagline}>
-                "The world sleeps beneath its scars... but something stirs again."
+                &ldquo;The world sleeps beneath its scars... but something stirs again.&rdquo;
               </p>
             </div>
             
