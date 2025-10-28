@@ -13,6 +13,7 @@ export default function Home() {
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     const targetDate = new Date('2025-11-24T00:00:00Z')
@@ -81,6 +82,7 @@ export default function Home() {
     }
 
     console.log('Submitting email:', email)
+    setIsSubmitting(true)
 
     try {
       // Call our API route instead of Google Script directly (avoids CORS)
@@ -103,7 +105,7 @@ export default function Home() {
 
       if (result.status === 'success') {
         saveEmail(email) // Still save locally as backup
-        showMessage('Welcome to the Fatebounders! You\'ll receive updates soon.', 'success')
+        showMessage('Welcome, Fatebounder! You\'re now part of the journey.', 'success')
         setEmail('')
       } else {
         console.error('Server returned error:', result.message)
@@ -112,6 +114,8 @@ export default function Home() {
     } catch (error) {
       console.error('Error submitting email:', error)
       showMessage('Unable to register email. Please try again later.', 'error')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -147,21 +151,21 @@ export default function Home() {
     <>
       <Head>
         <title>FATEBOUND - A Dark Fantasy RPG | Tika Studios</title>
-        <meta name="description" content="A story-rich RPG inspired by the myths of Southeastern Europe. Join the Fatebounders for early access updates. Teaser launching November 24, 2025." />
+        <meta name="description" content="Experience a story-rich dark fantasy RPG inspired by the ancient myths of Southeastern Europe. First teaser launching November 24, 2025." />
         <meta name="keywords" content="FATEBOUND, RPG, dark fantasy, Tika Studios, game, teaser, Southeastern Europe" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://fatebound-game.vercel.app/" />
         <meta property="og:title" content="FATEBOUND - A Dark Fantasy RPG | Tika Studios" />
-        <meta property="og:description" content="A story-rich RPG inspired by the myths of Southeastern Europe. Teaser launching November 24, 2025." />
+        <meta property="og:description" content="Experience a story-rich dark fantasy RPG inspired by the ancient myths of Southeastern Europe. First teaser launching November 24, 2025." />
         <meta property="og:image" content="https://fatebound-game.vercel.app/og-image.png" />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://fatebound-game.vercel.app/" />
         <meta property="twitter:title" content="FATEBOUND - A Dark Fantasy RPG | Tika Studios" />
-        <meta property="twitter:description" content="A story-rich RPG inspired by the myths of Southeastern Europe. Teaser launching November 24, 2025." />
+        <meta property="twitter:description" content="Experience a story-rich dark fantasy RPG inspired by the ancient myths of Southeastern Europe. First teaser launching November 24, 2025." />
         <meta property="twitter:image" content="https://fatebound-game.vercel.app/og-image.png" />
 
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -173,9 +177,9 @@ export default function Home() {
         <div className={styles.stickyBanner}>
           <div className={styles.bannerContent}>
             {/* <span className={styles.globeEmoji}>🌍</span> */}
-            <span className={styles.bannerText}>Don&apos;t miss the first official teaser launch</span>
+            <span className={styles.bannerText}>Teaser launching November 24, 2025 — Join the community</span>
             <a href="#email-section" className={styles.registerButton}>
-              Register now
+              Sign up now
             </a>
           </div>
         </div>
@@ -229,7 +233,7 @@ export default function Home() {
             {/* Countdown Timer */}
             <div className={styles.countdownContainer}>
               <h2 className={styles.countdownTitle}>
-                2D Teaser Launching
+                First Teaser Countdown
               </h2>
               <div className={styles.countdownGrid}>
                 <div className={styles.countdownItem}>
@@ -257,25 +261,26 @@ export default function Home() {
           <section id="email-section" className={styles.emailSection}>
             <div className={styles.emailContainer}>
               <h3 className={styles.emailTitle}>
-                Join the Fatebounders
+                Become a Fatebounder
               </h3>
               <p className={styles.emailSubtitle}>
-                Get early access updates and exclusive content
+                Be the first to receive updates, behind-the-scenes content, and exclusive reveals
               </p>
               
               <form onSubmit={handleEmailSubmit} className={styles.emailForm}>
                 <div className={styles.inputContainer}>
-                  <input 
-                    type="email" 
+                  <input
+                    type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
+                    placeholder="your.email@example.com"
                     className={styles.emailInput}
+                    disabled={isSubmitting}
                     required
                   />
                 </div>
-                <button type="submit" className={styles.submitButton}>
-                  Join the Fatebounders
+                <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+                  {isSubmitting ? 'Joining...' : 'Join Now'}
                 </button>
               </form>
               

@@ -387,6 +387,12 @@
   background: rgba(26, 26, 26, 0.95);
 }
 
+.emailInput:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: rgba(26, 26, 26, 0.5);
+}
+
 .submitButton {
   width: 100%;
   padding: 14px 24px;
@@ -417,6 +423,19 @@
 .submitButton:focus {
   outline: none;
   box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.3);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  background: var(--color-gold);
+}
+
+.submitButton:disabled:hover {
+  transform: none;
+  box-shadow: none;
+  background: var(--color-gold);
 }
 
 .formMessage {
