@@ -247,6 +247,44 @@
   box-shadow: 0 0 10px rgba(81, 41, 34, 0.3);
 }
 
+/* Fog Effect */
+.fog {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.fogParticle {
+  position: absolute;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.05) 40%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(40px);
+  animation: fogDrift 25s ease-in-out infinite;
+  opacity: 0.3;
+}
+
+@keyframes fogDrift {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.2;
+  }
+  25% {
+    transform: translate(50px, -30px) scale(1.1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(-30px, 40px) scale(0.9);
+    opacity: 0.3;
+  }
+  75% {
+    transform: translate(40px, 20px) scale(1.05);
+    opacity: 0.35;
+  }
+}
+
 .fireSparkle {
   position: absolute;
   width: 3px;
@@ -361,6 +399,13 @@
   opacity: 0;
   animation: fadeIn 1s ease-out 2s forwards;
   font-weight: 300;
+  line-height: 1.8;
+}
+
+.taglineBold {
+  font-weight: 500;
+  font-style: normal;
+  color: var(--color-text-secondary);
 }
 
 /* Countdown Timer */

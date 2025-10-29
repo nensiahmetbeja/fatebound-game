@@ -92,7 +92,37 @@ export default function Home() {
       }
     }
 
+    // Create fog particles
+    const createFog = () => {
+      const fogContainer = document.getElementById('fog')
+      if (!fogContainer) return
+
+      const fogCount = 40
+      fogContainer.innerHTML = ''
+
+      for (let i = 0; i < fogCount; i++) {
+        const fogParticle = document.createElement('div')
+        fogParticle.className = styles.fogParticle
+
+        // Random size for fog patches
+        const size = Math.random() * 200 + 100
+        fogParticle.style.width = `${size}px`
+        fogParticle.style.height = `${size}px`
+        
+        // Random position
+        fogParticle.style.left = `${Math.random() * 100}%`
+        fogParticle.style.top = `${Math.random() * 100}%`
+        
+        // Random animation delay and duration
+        fogParticle.style.animationDelay = `${Math.random() * 20}s`
+        fogParticle.style.animationDuration = `${Math.random() * 30 + 20}s`
+
+        fogContainer.appendChild(fogParticle)
+      }
+    }
+
     createParticles()
+    createFog()
   }, [])
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
@@ -127,7 +157,7 @@ export default function Home() {
 
       if (result.status === 'success') {
         saveEmail(email) // Still save locally as backup
-        showMessage('Welcome, Fatebounder! You\'re now part of the journey.', 'success')
+        showMessage('Welcome to the Founding Circle! The witches remember those who believe first.', 'success')
         setEmail('')
       } else {
         console.error('Server returned error:', result.message)
@@ -208,6 +238,9 @@ export default function Home() {
 
         {/* Particle Background */}
         <div id="particles" className={styles.particles}></div>
+        
+        {/* Fog Effect */}
+        <div id="fog" className={styles.fog}></div>
 
         {/* Main Content */}
         <main className={styles.main}>
@@ -249,7 +282,9 @@ export default function Home() {
               
               {/* Tagline */}
               <p className={styles.tagline}>
-                &ldquo;The world sleeps beneath its scars... but something stirs again.&rdquo;
+                The witches remember those who believed first.
+                <br />
+                <span className={styles.taglineBold}>Join the Founding Circle, and watch the myth unfold.</span>
               </p>
             </div>
             
@@ -284,10 +319,10 @@ export default function Home() {
           <section id="email-section" className={styles.emailSection}>
             <div className={styles.emailContainer}>
               <h3 className={styles.emailTitle}>
-                Become a Fatebounder
+                Join the Founding Circle
               </h3>
               <p className={styles.emailSubtitle}>
-                Be the first to receive updates, behind-the-scenes content, and exclusive reveals
+                Founding Circle members get early access and exclusive updates
               </p>
               
               <form onSubmit={handleEmailSubmit} className={styles.emailForm}>
@@ -303,7 +338,7 @@ export default function Home() {
                   />
                 </div>
                 <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
-                  {isSubmitting ? 'Joining...' : 'Join Now'}
+                  {isSubmitting ? 'Joining...' : 'Join the Founding Circle'}
                 </button>
               </form>
               
