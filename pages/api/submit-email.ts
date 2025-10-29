@@ -31,12 +31,17 @@ export default async function handler(
     })
   }
 
-  const scriptUrl = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
+  // Support both NEXT_PUBLIC_ (browser-accessible) and non-public (server-only) variable names
+  const scriptUrl = process.env.GOOGLE_SCRIPT_URL || process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
 
   if (!scriptUrl) {
+    // Log for debugging (only in server logs, not sent to client)
+    console.error('Google Sheets URL not configured. Check environment variables in Vercel.')
+    console.error('Available env vars:', Object.keys(process.env).filter(k => k.includes('GOOGLE')))
+    
     return res.status(500).json({
       status: 'error',
-      message: 'Google Sheets integration not configured'
+      message: 'Google Sheets integration not configured. Please contact support.'
     })
   }
 
@@ -55,14 +60,30 @@ export default async function handler(
     })
 
     if (!response.ok) {
-      console.error('Google Script error:', response.status, response.statusText)
+      const errorText = await response.text()
+      console.error('Google Script error:', {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorText,
+        url: scriptUrl
+      })
       return res.status(500).json({
         status: 'error',
-        message: 'Failed to submit email to Google Sheets'
+        message: 'Failed to submit email to Google Sheets. Please try again.'
       })
     }
 
-    const result = await response.json()
+    let result
+    try {
+      result = await response.json()
+    } catch (parseError) {
+      const text = await response.text()
+      console.error('Failed to parse Google Script response:', text)
+      return res.status(500).json({
+        status: 'error',
+        message: 'Invalid response from email service'
+      })
+    }
 
     if (result.status === 'success') {
       return res.status(200).json({
@@ -78,10 +99,15 @@ export default async function handler(
     }
 
   } catch (error: any) {
-    console.error('Error submitting to Google Sheets:', error)
+    console.error('Error submitting to Google Sheets:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name,
+      scriptUrl: scriptUrl ? 'configured' : 'missing'
+    })
     return res.status(500).json({
       status: 'error',
-      message: 'Internal server error'
+      message: 'Unable to process request. Please try again later.'
     })
   }
 }
