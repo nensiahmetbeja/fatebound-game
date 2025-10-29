@@ -41,32 +41,54 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    // Create particles
+    // Create particles and fire sparkles
     const createParticles = () => {
       const particlesContainer = document.getElementById('particles')
       if (!particlesContainer) return
 
       const particleCount = 80
+      const fireSparkleCount = 30
       particlesContainer.innerHTML = ''
 
+      // Create ambient particles
       for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div')
         particle.className = styles.particle
-        
+
         const size = Math.random() * 4 + 0.5
         particle.style.width = `${size}px`
         particle.style.height = `${size}px`
         particle.style.left = `${Math.random() * 100}%`
         particle.style.top = `${Math.random() * 100}%`
         particle.style.animationDelay = `${Math.random() * 8}s`
-        
+
         if (i % 3 === 0) {
           particle.style.boxShadow = `0 0 15px rgba(107, 58, 42, 0.4)`
         } else if (i % 5 === 0) {
           particle.style.boxShadow = `0 0 20px rgba(81, 41, 34, 0.5)`
         }
-        
+
         particlesContainer.appendChild(particle)
+      }
+
+      // Create fire sparkles
+      for (let i = 0; i < fireSparkleCount; i++) {
+        const sparkle = document.createElement('div')
+        sparkle.className = styles.fireSparkle
+
+        const size = Math.random() * 3 + 2
+        sparkle.style.width = `${size}px`
+        sparkle.style.height = `${size}px`
+        sparkle.style.left = `${Math.random() * 100}%`
+        sparkle.style.bottom = `${Math.random() * 20 - 10}%`
+        sparkle.style.animationDelay = `${Math.random() * 8}s`
+        sparkle.style.animationDuration = `${Math.random() * 4 + 6}s`
+
+        // Random horizontal drift
+        const driftX = (Math.random() - 0.5) * 100
+        sparkle.style.setProperty('--drift-x', `${driftX}px`)
+
+        particlesContainer.appendChild(sparkle)
       }
     }
 
@@ -204,6 +226,7 @@ export default function Home() {
                     className={styles.tikaLogoImage}
                     priority
                   />
+                  {/* <p className={styles.presentsText}>presents</p> */}
                 </div>
 
                 {/* FATEBOUND Title */}

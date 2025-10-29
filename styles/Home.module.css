@@ -14,6 +14,20 @@
   overflow-x: hidden;
 }
 
+/* Page Load Veil */
+.container::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  z-index: 9999;
+  pointer-events: none;
+  animation: pageVeil 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
 .container::before {
   content: '';
   position: fixed;
@@ -38,6 +52,40 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes cinematicFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(1.05);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes revealFromDark {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pageVeil {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
   }
 }
 
@@ -80,6 +128,38 @@
   }
 }
 
+@keyframes fireRise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateX(0) scale(0.5);
+  }
+  10% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100vh) translateX(var(--drift-x, 20px)) scale(0);
+  }
+}
+
+@keyframes fireGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 10px rgba(212, 175, 55, 0.8),
+      0 0 20px rgba(255, 140, 0, 0.6),
+      0 0 30px rgba(255, 69, 0, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(212, 175, 55, 1),
+      0 0 40px rgba(255, 140, 0, 0.8),
+      0 0 60px rgba(255, 69, 0, 0.6);
+  }
+}
+
 @keyframes stirringPower {
   0% {
     filter: blur(0px) brightness(1);
@@ -109,6 +189,8 @@
   animation: pulse 2s infinite;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(81, 41, 34, 0.3);
+  opacity: 0;
+  animation: revealFromDark 1s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards, pulse 2s infinite 2.5s;
 }
 
 .bannerContent {
@@ -165,6 +247,18 @@
   box-shadow: 0 0 10px rgba(81, 41, 34, 0.3);
 }
 
+.fireSparkle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: radial-gradient(circle, #FFD700 0%, #FF8C00 50%, #FF4500 100%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: fireRise 8s ease-in infinite, fireGlow 2s ease-in-out infinite;
+  filter: blur(0.5px);
+  will-change: transform, opacity;
+}
+
 /* Main Content */
 .main {
   position: relative;
@@ -182,7 +276,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-10) var(--space-3);
+  padding: var(--space-6) var(--space-3);
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
@@ -190,11 +284,13 @@
 
 .logoContainer {
   text-align: center;
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-3);
+  opacity: 0;
+  animation: revealFromDark 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards;
 }
 
 .logoWrapper {
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-2);
 }
 
 .tikaLogo {
@@ -216,29 +312,40 @@
   opacity: 0.9;
 }
 
+.presentsText {
+  font-size: 11px;
+  color: #9ca3af;
+  text-transform: lowercase;
+  margin-top: 4px;
+  margin-bottom: 0;
+  font-weight: 300;
+  letter-spacing: 2px;
+  font-style: italic;
+}
+
 .fateboundTitle {
   margin-bottom: var(--space-3);
 }
 
 .fateboundSvg {
-  height: 120px;
-  width: auto;
-  max-width: 90%;
+  width: 100%;
+  height: auto;
+  max-width: 800px;
   margin: 0 auto;
   display: block;
-  filter: drop-shadow(0 2px 20px rgba(212, 175, 55, 0.3));
+  filter: drop-shadow(0 2px 20px rgba(81, 41, 34, 0.4));
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .fateboundSvg:hover {
   transform: scale(1.02);
-  filter: drop-shadow(0 2px 25px rgba(212, 175, 55, 0.4));
+  filter: drop-shadow(0 2px 25px rgba(81, 41, 34, 0.5));
 }
 
 .subtitle {
   font-size: 18px;
   color: var(--color-text-secondary);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-2);
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
@@ -250,7 +357,7 @@
   font-size: 15px;
   color: var(--color-text-muted);
   font-style: italic;
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-4);
   opacity: 0;
   animation: fadeIn 1s ease-out 2s forwards;
   font-weight: 300;
@@ -259,23 +366,25 @@
 /* Countdown Timer */
 .countdownContainer {
   text-align: center;
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-4);
   width: 100%;
+  opacity: 0;
+  animation: revealFromDark 1.2s cubic-bezier(0.4, 0, 0.2, 1) 1.4s forwards;
 }
 
 .countdownTitle {
   font-size: 32px;
   font-family: var(--font-display);
   font-weight: 600;
-  color: var(--color-gold);
-  margin-bottom: var(--space-6);
+  color: #D4AF37;
+  margin-bottom: var(--space-3);
   letter-spacing: 1px;
 }
 
 .countdownGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-2);
+  gap: 8px;
   max-width: 900px;
   margin: 0 auto;
   padding: 0 var(--space-2);
@@ -283,28 +392,28 @@
 
 .countdownItem {
   text-align: center;
-  padding: var(--space-3);
+  padding: 12px;
   background: rgba(0, 0, 0, 0.3);
-  border-radius: 16px;
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.4);
   backdrop-filter: blur(10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .countdownItem:hover {
-  transform: translateY(-5px);
-  border-color: rgba(212, 175, 55, 0.5);
-  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+  transform: translateY(-3px);
+  border-color: rgba(212, 175, 55, 0.7);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
   background: rgba(0, 0, 0, 0.4);
 }
 
 .countdownNumber {
   font-size: 56px;
   font-weight: 700;
-  color: var(--color-gold);
+  color: #D4AF37;
   font-family: var(--font-display);
-  text-shadow: 0 0 30px rgba(212, 175, 55, 0.6), 0 0 60px rgba(81, 41, 34, 0.4);
-  margin-bottom: var(--space-1);
+  text-shadow: 0 0 30px rgba(212, 175, 55, 0.7), 0 0 60px rgba(212, 175, 55, 0.4);
+  margin-bottom: 4px;
   animation: stirringPower 3s ease-in-out infinite;
   line-height: 1;
 }
@@ -320,16 +429,18 @@
 .countdownDate {
   font-size: 18px;
   color: var(--color-text-muted);
-  margin-top: var(--space-4);
+  margin-top: var(--space-2);
   font-weight: 500;
 }
 
 /* Email Section */
 .emailSection {
-  padding: var(--space-6) var(--space-3) var(--space-10);
+  padding: var(--space-4) var(--space-3) var(--space-6);
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
+  opacity: 0;
+  animation: revealFromDark 1.2s cubic-bezier(0.4, 0, 0.2, 1) 2s forwards;
 }
 
 .emailContainer {
@@ -342,14 +453,14 @@
   font-size: 28px;
   font-family: var(--font-display);
   font-weight: 600;
-  color: var(--color-gold);
-  margin-bottom: var(--space-3);
+  color: #D4AF37;
+  margin-bottom: var(--space-2);
   letter-spacing: 1px;
 }
 
 .emailSubtitle {
   color: var(--color-text-secondary);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-3);
   font-size: 16px;
   line-height: 1.6;
 }
@@ -357,7 +468,7 @@
 .emailForm {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: 12px;
 }
 
 .inputContainer {
@@ -382,8 +493,8 @@
 
 .emailInput:focus {
   outline: none;
-  border-color: var(--color-gold);
-  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+  border-color: #512922;
+  box-shadow: 0 0 0 4px rgba(81, 41, 34, 0.2);
   background: rgba(26, 26, 26, 0.95);
 }
 
@@ -396,7 +507,7 @@
 .submitButton {
   width: 100%;
   padding: 14px 24px;
-  background: var(--color-gold);
+  background: #D4AF37;
   color: #000000;
   font-weight: 700;
   font-size: 16px;
@@ -411,9 +522,9 @@
 }
 
 .submitButton:hover {
-  background: var(--color-gold-light);
+  background: #E8C55B;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.5);
 }
 
 .submitButton:active {
@@ -429,13 +540,13 @@
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
-  background: var(--color-gold);
+  background: #D4AF37;
 }
 
 .submitButton:disabled:hover {
   transform: none;
   box-shadow: none;
-  background: var(--color-gold);
+  background: #D4AF37;
 }
 
 .formMessage {
@@ -458,7 +569,7 @@
 
 /* Footer */
 .footer {
-  padding: var(--space-5) var(--space-3);
+  padding: var(--space-3) var(--space-3);
   border-top: 1px solid #374151;
   width: 100%;
   margin-top: auto;
@@ -494,7 +605,7 @@
 }
 
 .socialLink:hover {
-  color: var(--color-gold);
+  color: #512922;
   transform: translateY(-2px);
 }
 
@@ -519,8 +630,7 @@
   }
 
   .fateboundSvg {
-    height: 160px;
-    max-width: 95%;
+    max-width: 900px;
   }
 
   .subtitle {
@@ -577,7 +687,7 @@
   }
 
   .fateboundSvg {
-    height: 180px;
+    max-width: 1000px;
   }
 
   .subtitle {
@@ -686,7 +796,7 @@
   }
 
   .fateboundSvg {
-    height: 100px;
+    max-width: 600px;
   }
 
   .subtitle {

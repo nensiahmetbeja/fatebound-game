@@ -50,12 +50,12 @@ html, body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d4af37;
+  background: #512922;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #f4d03f;
+  background: #6b3a2a;
 }
 
 /* Global font imports */
